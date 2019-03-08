@@ -1,0 +1,11 @@
+
+
+.container {
+	margin: 0 auto;
+}
+
+.inner {
+	height: 200px;
+	background-color: #006295;
+	color: #FFFFFF;
+}
