@@ -1,11 +1,23 @@
-
-
-.container {
-	margin: 0 auto;
+li {
+	list-style-type: none;
+	/*width: 100px;
+	height: 100px;
+	background-color: #006295*/;
 }
 
-.inner {
+.category-list {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.category-item {
+	margin: 20px;
+	text-align: center;
+	width: 200px;
 	height: 200px;
+	margin: auto;
 	background-color: #006295;
-	color: #FFFFFF;
+	color: #FFF;
 }
