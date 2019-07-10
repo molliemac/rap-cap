@@ -1,23 +1,30 @@
-li {
-	list-style-type: none;
-	/*width: 100px;
-	height: 100px;
-	background-color: #006295*/;
-}
-
-.category-list {
+.categories {
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: row;
-	justify-content: space-around;
+	flex-direction: row;	
 }
 
-.category-item {
+.categories div {
 	margin: 20px;
 	text-align: center;
 	width: 200px;
 	height: 200px;
-	margin: auto;
-	background-color: #006295;
+	background-color: #6772e5;
 	color: #FFF;
+	
+  font-weight: bold;
+}
+
+.categories div:hover {
+	opacity: 0.5;
+}
+
+.categories li {
+	position: relative;
+	top: 40%;	
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
 }

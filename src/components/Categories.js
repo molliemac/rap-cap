@@ -1,51 +1,81 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import firebase from '../firebase.js';
+//import Category from './Category';
 
 class Categories extends Component {
   constructor(props) {
     super(props);
-    this.state = { categories: [] }; // <- set up react state
+    this.state = {
+      categories: [],
+      lyrics: [],
+    };
   }
-   componentWillMount(){
-    /* Create reference to categories in Firebase Database */
-    let categoriesRef = firebase.database().ref('categories');
-    categoriesRef.on('child_added', snapshot => {
-      /* Update React state when category is added at Firebase Database */
-      let category = { text: snapshot.val(), id: snapshot.key };
-      this.setState({ categories: [category].concat(this.state.categories) });
-    })
-  }
-  addCategory(e){
-    e.preventDefault(); // <- prevent form submit from reloading the page
-    /* Send the category to Firebase */
-    firebase.database().ref('categories').push( this.inputEl.value );
-    this.inputEl.value = ''; // <- clear the input
-  }
-  render() {
-    return (
-      
-      <div className="container">
-      <h1>Categories</h1>
-        <form id="category-form" onSubmit={this.addCategory.bind(this)}>
-        <div className="form-group">
-          <input className="form-control" type="text" placeholder="Enter a new category" ref={ el => this.inputEl = el }/>
-        </div>
-        <div className="form-group">
-          <input className="btn btn-primary" type="submit"/>
-        </div>
-        </form>
-        <div className="list-group">
-        {this.state.categories.map(category => (
-          <Link to={`/categories/${category.id}`} key={category.id} className="list-group-item">{category.text}</Link>
-        ))}
-      </div>
-      </div>
+  componentDidMount() {
+    let categoriesRef = firebase.database().ref('categories').on('value', snapshot => {
+      const categoriesObject = snapshot.val();
+      console.log('categoriesObject', categoriesObject);
+      const categoriesList = Object.keys(categoriesObject).map(key => ({
+        ...categoriesObject[key],
+        uid: key,
+      }));
 
+      this.setState({
+        categories: categoriesList
+      })
       
       
+    })
+    // const categoriesRef = firebase.database().ref('categories');
+    // categoriesRef.on('value', (snapshot) => {
+    //   let categories = snapshot.val();
+
+    //   let newState = [];
+    //   for (let category in categories) {
+    //     newState.push({
+    //       category: category
+    //     })
+    //   }
+    //   this.setState({
+    //     categories: categories
+    //   })
+    //   console.log('categories', categories);
+      
+    // })
+  }
+
+  render() {
+   const { categories } = this.state;
+   console.log('this.state', this.state);
+    return(
+      <div>
+          <h3>Categories</h3>
+          <ul>
+              {categories.map(category => ( 
+                  
+                  
+                  <li key={category.uid}>
+                    <Link to={`/categories/${category.uid}`}>{category.uid}</Link>
+                  </li>
+
+              ))}
+              </ul>
+              <Route path={`/categories/:uid`} component={Category} />
+        </div>
     );
   }
+  
+}
+
+function Category ({ match }) {
+  
+
+  return (
+    <div>
+      <h2>{match.params.uid}</h2>
+      
+    </div>
+  )
 }
 
 export default Categories;
