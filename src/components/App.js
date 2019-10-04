@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Categories from './Categories';
+import Category from './Category';
+import Home from './Home';
 import Test from './Test';
 
 function App() {
@@ -23,19 +25,12 @@ function App() {
         
         <Route exact path="/" component={Home} />
         <Route path="/topics" component={Topics} />
+        <Route path="/:id" component={Category} />
         
         <Route path="/categories" component={Categories} />
         
       </div>
     </Router>
-  );
-}
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
   );
 }
 

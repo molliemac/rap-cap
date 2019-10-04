@@ -1,60 +1,78 @@
 import React, {Component} from 'react';
-// import Category from './Category';
 // import Categories from './Categories';
-// import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import firebase from '../firebase.js';
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      categories: [],
-      lyrics: [],
-    };
+      category: '',
+      categories: []
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const categoriesRef = firebase.database().ref('categories');
+    const category = this.state.category;
+    categoriesRef.push(category);
+    this.setState({
+      category: ''
+    })
+  }
+
   componentDidMount() {
     const categoriesRef = firebase.database().ref('categories');
     categoriesRef.on('value', (snapshot) => {
       let categories = snapshot.val();
-
+      console.log(categories);
       let newState = [];
       for (let category in categories) {
+        console.log(category);
         newState.push({
-          category: category
-        })
+          id: categories[category]
+        });
       }
       this.setState({
         categories: newState
-      })
-      console.log('categories', newState);
-    })
+      });
+    });
   }
 
   render() {
-    return(
+    return (
       <div>
-        <div>
-          <div>
-          <h3>Categories</h3>
-
-          </div>
-          <section id="categories">
-            <div>
-              {this.state.categories.map((category) => {
-                return (
-                  <div key={category.category}>
-                    <h3>{category.category}</h3>
- 
-                  </div>
-
-                )
-              })}
-            </div>
-          </section>
-        </div>
+      <div className="container">
+        <h2>Home</h2>
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" name="category" placeholder="New Category" onChange={this.handleChange} value={this.state.category} />
+          <button>Add Category</button>
+        </form>
       </div>
 
-
+      <section className='display-item'>
+        <div className="wrapper">
+          <ul>
+            {this.state.categories.map((category) => {
+              return (
+                <li key={category.id}>
+                  <Link to={`/${category.id}`}>{category.id}</Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </section>
+    </div>
     );
   }
 }

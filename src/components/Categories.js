@@ -12,9 +12,9 @@ class Categories extends Component {
     };
   }
   componentDidMount() {
-    let categoriesRef = firebase.database().ref('categories').on('value', snapshot => {
+    let categoriesRef = firebase.database().ref('lyrics').on('value', snapshot => {
       const categoriesObject = snapshot.val();
-      console.log('categoriesObject', categoriesObject);
+      console.log('categoriesRef', categoriesRef.category);
       const categoriesList = Object.keys(categoriesObject).map(key => ({
         ...categoriesObject[key],
         uid: key,
@@ -26,22 +26,7 @@ class Categories extends Component {
       
       
     })
-    // const categoriesRef = firebase.database().ref('categories');
-    // categoriesRef.on('value', (snapshot) => {
-    //   let categories = snapshot.val();
-
-    //   let newState = [];
-    //   for (let category in categories) {
-    //     newState.push({
-    //       category: category
-    //     })
-    //   }
-    //   this.setState({
-    //     categories: categories
-    //   })
-    //   console.log('categories', categories);
-      
-    // })
+    
   }
 
   render() {
