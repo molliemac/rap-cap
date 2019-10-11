@@ -61,7 +61,7 @@ class Home extends Component {
 
       <section className='display-item'>
         <div className="wrapper">
-          <ul>
+          <ul className="categories">
             {this.state.categories.map((category) => {
               return (
                 <li key={category.id}>

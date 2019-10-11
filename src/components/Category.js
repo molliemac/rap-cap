@@ -6,45 +6,36 @@ class Category extends Component {
     super(props);
     this.state = {
       category: this.props.match.params.id,
-      lyric: '',
-      artist: '',
-      song: '',
-      lyrics: [],
+      lyrics: []
     }
-    this.handleChange = this.handleChange.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
 
   handleSubmit(e) {
     e.preventDefault();
     const lyricsRef = firebase.database().ref('lyrics');
+    const { lyrics } = this.state;
+    console.log('this.state', this.state);
     const lyric = {
-      lyric: this.state.lyric,
-      artist: this.state.artist,
-      song: this.state.song,
+      lyric: this.refs.lyric.value,
+      artist: this.refs.artist.value,
+      song: this.refs.song.value,
       category: this.state.category
     }
-    lyricsRef.push({
-      lyric: this.state.lyric,
-      artist: this.state.artist,
-      song: this.state.song,
-      category: this.state.category,
-    });
-    this.setState({
-      lyric: '',
-      artist: '',
-      song: ''
-    });
-  }
+
+    lyricsRef.push(lyric);
+    this.setState({ lyrics });
+    console.log('lyric', lyric);
+
+    this.refs.lyric.value = "";
+    this.refs.artist.value = "";
+    this.refs.song.value = "";
+  };
 
   componentDidMount() {
-    const lyricsRef = firebase.database().ref('lyrics');
+    let lyricsRef = firebase.database().ref('lyrics');
     lyricsRef.orderByChild("category").equalTo(this.state.category).on('value', (snapshot) => {
       let lyrics = snapshot.val();
       let newState = [];
@@ -61,7 +52,15 @@ class Category extends Component {
       this.setState({
         lyrics: newState
       });
+      console.log(this.state.lyrics);
     });
+  }
+
+  updateData = lyric => {
+    this.refs.lyric.value = lyric.lyric;
+    this.refs.artist.value = lyric.artist;
+    this.refs.song.value = lyric.song;
+    this.refs.uid.value = lyric.id;
   }
 
   render() {
@@ -71,20 +70,28 @@ class Category extends Component {
         <div className="form">
           <h1>Category: {this.state.category } </h1>
             <form onSubmit={this.handleSubmit}>
-              <input type="text" name="lyric" placeholder="New Lyric" onChange={this.handleChange} value={this.state.lyric} />
-              <input type="text" name="artist" placeholder="Artist" onChange={this.handleChange} value={this.state.artist} />
-              <input type="text" name="song" placeholder="Song" onChange={this.handleChange} value={this.state.song} />
+              <input type="hidden" ref="uid" />
+              <input type="text" ref="lyric" placeholder="New Lyric" />
+              <input type="text" ref="artist" placeholder="Artist" />
+              <input type="text" ref="song" placeholder="Song" />
               <button>Add Lyric</button>
             </form>
         </div>
         <div className="lyricsList">
           <ul>
-            {this.state.lyrics.map((lyric) => {
+            {lyrics.map((lyric) => {
               return (
                 <li key={lyric.id}>
                   <h3>{lyric.lyric}</h3>
                   <p>Artist: {lyric.artist}</p>
                   <p>Song: {lyric.song}</p>
+                  
+                  <button
+                      onClick={() => this.updateData(lyric)}
+                      className="btn btn-link"
+                    >
+                      Edit
+                    </button>
                 </li>
               )
             })}
