@@ -102,7 +102,7 @@ class Category extends Component {
             <div className="form-row">
               <input type="hidden" ref="uid" />
               <div className="form-group col-md-4">
-                <input type="text" ref="lyric" placeholder="New Lyric" />
+                <textarea ref="lyric" placeholder="New Lyric" />
               </div>
               <div className="form-group col-md-4">
                 <input type="text" ref="artist" placeholder="Artist" />
@@ -119,14 +119,24 @@ class Category extends Component {
  
           <div className="row">
             <div className="col-xl-12">
-              <ul>
+              <table id="lyricsTable" className="table">
+              <thead className="thead-dark">
+              <tr>
+                <th scope="col">Lyric</th>
+                <th scope="col">Song</th>
+                <th scope="col">Artist</th>
+                <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              
+                <tbody>
                 {lyrics.map((lyric) => {
                   return (
-                    <li key={lyric.uid}>
-                      <h3>{lyric.lyric}</h3>
-                      <p>Artist: {lyric.artist}</p>
-                      <p>Song: {lyric.song}</p>
-                      <button
+                    <tr key={lyric.uid}>
+                      <td>{lyric.lyric}</td>
+                      <td>{lyric.song}</td>
+                      <td>{lyric.artist}</td>
+                      <td><button
                           onClick={() => this.updateData(lyric)}
                           className="btn btn-link"
                         >Edit
@@ -136,10 +146,12 @@ class Category extends Component {
                           className="btn btn-link"
                         >Remove
                         </button>
-                    </li>
+                        </td>
+                    </tr>
                     )
                   })}
-              </ul>
+                 </tbody>
+              </table>
             </div>
           </div>
         </div>

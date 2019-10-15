@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed:400,700&display=swap');
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
 .categories {
 	display: flex;
 	flex-flow: row wrap;
@@ -16,4 +22,8 @@
 
 .categories a {
 	color: #FFF;
+}
+
+#lyricsTable {
+	margin-top: 40px;
 }
