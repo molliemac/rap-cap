@@ -7,6 +7,7 @@ class Category extends Component {
     this.state = {
       category: this.props.match.params.id,
       lyrics: [],
+      search: '',
     }
     
   }
@@ -16,6 +17,12 @@ class Category extends Component {
     this.refs.lyric.value = lyric.lyric;
     this.refs.artist.value = lyric.artist;
     this.refs.song.value = lyric.song;
+  }
+
+  updateSearch(event) {
+    this.setState({search: event.target.value.substr(0, 20)});
+    console.log('search', this.state.search);
+    console.log('event.target', event.target.value);
   }
 
   handleSubmit = event => {
@@ -88,6 +95,14 @@ class Category extends Component {
 
   render() {
     const {lyrics} = this.state;
+    let filteredLyrics = lyrics.filter(
+      (lyric) => {
+        return lyric.lyric.toLowerCase().indexOf(
+          this.state.search) !== -1;
+      }
+    );
+          console.log('filtered', filteredLyrics);
+
     return (
       <div className="container">
         <div className="row">
@@ -116,9 +131,19 @@ class Category extends Component {
           </div>
         </div>
         
- 
+          <div className="row">
+          <div className="col-xl-12">
+            <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="inputGroup-sizing-default">search lyrics</span>
+                </div>
+                <input type="text" className="form-control" id="lyricSearch" value={this.state.search} onChange={this.updateSearch.bind(this)} aria-label="Default" aria-describedby="inputGroup-sizing-default" />
+              </div>
+              </div>
+          </div>
           <div className="row">
             <div className="col-xl-12">
+              
               <table id="lyricsTable" className="table">
               <thead className="thead-dark">
               <tr>
@@ -130,7 +155,7 @@ class Category extends Component {
               </thead>
               
                 <tbody>
-                {lyrics.map((lyric) => {
+                {filteredLyrics.map((lyric) => {
                   return (
                     <tr key={lyric.uid}>
                       <td>{lyric.lyric}</td>
