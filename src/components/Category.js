@@ -17,6 +17,7 @@ class Category extends Component {
     this.refs.lyric.value = lyric.lyric;
     this.refs.artist.value = lyric.artist;
     this.refs.song.value = lyric.song;
+    this.refs.songLink.value = lyric.songLink;
   }
 
   updateSearch(event) {
@@ -31,10 +32,11 @@ class Category extends Component {
     let lyric = this.refs.lyric.value;
     let artist = this.refs.artist.value;
     let song = this.refs.song.value;
+    let songLink = this.refs.songLink.value;
     let uid = this.refs.uid.value;
     let category = this.state.category;
 
-    if (uid && lyric && artist && song && category) {
+    if (uid && lyric && artist && song && songLink && category) {
       const { lyrics } = this.state;
       const lyricIndex = lyrics.findIndex(data => {
         console.log('data', data.uid, uid);
@@ -43,18 +45,19 @@ class Category extends Component {
       lyrics[lyricIndex].lyric = lyric;
       lyrics[lyricIndex].artist = artist;
       lyrics[lyricIndex].song = song;
+      lyrics[lyricIndex].songLink = songLink;
       lyrics[lyricIndex].category = category;
 
       lyricsRef.update({
-        [uid]: {lyric, artist, song, category}
+        [uid]: {lyric, artist, song, category, songLink}
       })
       
       console.log('edited lyric', this.state, lyrics[lyricIndex]);
     } else if (lyric && song && artist && category) {
       // const uid = new Date().getTime().toString();
       const { lyrics } = this.state;
-      lyrics.push({ uid, lyric, song, artist, category });
-      lyricsRef.push({ uid, lyric, song, artist, category });
+      lyrics.push({ uid, lyric, song, artist, category, songLink });
+      lyricsRef.push({ uid, lyric, song, artist, category, songLink });
       this.setState({ lyrics });
       console.log('added new', {lyrics});
     }
@@ -62,6 +65,7 @@ class Category extends Component {
     this.refs.lyric.value = "";
     this.refs.artist.value = "";
     this.refs.song.value = "";
+    this.refs.songLink.value = "";
     this.refs.uid.value = "";
   };
 
@@ -78,6 +82,7 @@ class Category extends Component {
           lyric: lyrics[lyric].lyric,
           artist: lyrics[lyric].artist,
           song: lyrics[lyric].song,
+          songLink: lyrics[lyric].songLink,
           category: lyrics[lyric].category
         });
         console.log('newstate', newState);
@@ -116,14 +121,19 @@ class Category extends Component {
             <form onSubmit={this.handleSubmit}>
             <div className="form-row">
               <input type="hidden" ref="uid" />
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-6">
                 <textarea ref="lyric" placeholder="New Lyric" />
               </div>
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-6">
                 <input type="text" ref="artist" placeholder="Artist" />
               </div>
-              <div className="form-group col-md-4">
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-6">
                 <input type="text" ref="song" placeholder="Song" />
+              </div>
+              <div className="form-group col-md-6">
+                <input type="text" ref="songLink" placeholder="Genius Lyric" />
               </div>
             </div>
               <button type="submit" className="btn btn-primary">Add Lyric</button>
@@ -159,7 +169,7 @@ class Category extends Component {
                   return (
                     <tr key={lyric.uid}>
                       <td>{lyric.lyric}</td>
-                      <td>{lyric.song}</td>
+                      <td><a href={lyric.songLink} target="_blank">{lyric.song}</a></td>
                       <td>{lyric.artist}</td>
                       <td><button
                           onClick={() => this.updateData(lyric)}

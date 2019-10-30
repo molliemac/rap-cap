@@ -50,21 +50,15 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-      <div className="container">
-        <h2>Home</h2>
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" name="category" placeholder="New Category" onChange={this.handleChange} value={this.state.category} />
-          <button>Add Category</button>
-        </form>
-      </div>
+        <div className="container">
+          <h2 className="logo">I'd Rap That</h2>
 
       <section className='display-item'>
         <div className="wrapper">
           <ul className="categories">
             {this.state.categories.map((category) => {
               return (
-                <li key={category.id}>
+                <li key={category.id} className={`${category.id}`.toLowerCase()}>
                   <Link to={`/${category.id}`}>{category.id}</Link>
                 </li>
               )
@@ -72,6 +66,10 @@ class Home extends Component {
           </ul>
         </div>
       </section>
+      <form onSubmit={this.handleSubmit}>
+          <input type="text" name="category" placeholder="New Category" onChange={this.handleChange} value={this.state.category} />
+          <button>Add Category</button>
+        </form>
     </div>
     );
   }

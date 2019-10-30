@@ -2,6 +2,14 @@
 
 body {
 	font-family: 'Open Sans', sans-serif;
+	background: #33363b;
+	color: #FFF;
+}
+
+.logo {
+	text-align: center;
+	padding-bottom: 20px;
+	font-weight: 700;
 }
 
 .categories {
@@ -18,6 +26,41 @@ body {
 	margin: 10px;
 	text-align: center;
 	padding-top: 100px;
+	color: #FFF;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+li.drizzy {
+	background-image: linear-gradient(90deg, rgba(128,102,217,0.5872724089635855) 0%, rgba(199,0,255,0.6320903361344538) 100%), url('images/drizzy-drake-bg.svg');
+	background-size: cover;
+}
+
+li.summa {
+	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/summa-vibes-bg.svg');
+	background-size: cover;
+}
+
+li.travel {
+	background-image: linear-gradient(90deg, rgba(253,93,81,1) 0%, rgba(255,190,0,0.6348914565826331) 100%), url('images/travel-bg.svg');
+	background-size: cover;
+	background-position: center center;
+}
+
+li.myself {
+	background-image: linear-gradient(90deg, rgba(128,102,217,0.5872724089635855) 0%, rgba(199,0,255,0.6320903361344538) 100%), url('images/feelin-myself-bg.svg');
+	background-size: cover;
+}
+
+li.workout {
+	background-image: linear-gradient(90deg, rgba(253,93,81,1) 0%, rgba(255,190,0,0.6348914565826331) 100%), url('images/workout-bg.svg');
+	background-size: cover;
+	background-position: center center;
+}
+
+li.bitch {
+	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/boss-lady-bg.svg');
+	background-size: cover;
 }
 
 .categories a {
@@ -26,4 +69,5 @@ body {
 
 #lyricsTable {
 	margin-top: 40px;
+	color: #FFF;
 }
