@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
-import firebase from '../firebase.js';
+import { FirebaseContext } from '../Firebase';
 //import Category from './Category';
 
 class Categories extends Component {
@@ -12,7 +12,7 @@ class Categories extends Component {
     };
   }
   componentDidMount() {
-    let categoriesRef = firebase.database().ref('lyrics').on('value', snapshot => {
+    let categoriesRef = this.props.firebase.database().ref('lyrics').on('value', snapshot => {
       const categoriesObject = snapshot.val();
       console.log('categoriesRef', categoriesRef.category);
       const categoriesList = Object.keys(categoriesObject).map(key => ({

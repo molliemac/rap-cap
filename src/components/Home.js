@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // import Categories from './Categories';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import firebase from '../firebase.js';
+import { FirebaseContext } from '../Firebase';
 
 class Home extends Component {
   constructor() {
@@ -22,7 +22,7 @@ class Home extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const categoriesRef = firebase.database().ref('categories');
+    const categoriesRef = this.props.firebase.database().ref('categories');
     const category = this.state.category;
     categoriesRef.push(category);
     this.setState({
@@ -31,7 +31,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const categoriesRef = firebase.database().ref('categories');
+    const categoriesRef = this.props.firebase.database().ref('categories');
     categoriesRef.on('value', (snapshot) => {
       let categories = snapshot.val();
       console.log(categories);
