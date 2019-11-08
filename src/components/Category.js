@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import firebase from '../firebase.js';
+import { withFirebase } from './Firebase';
 
 class Category extends Component {
   constructor(props) {
@@ -9,7 +9,6 @@ class Category extends Component {
       lyrics: [],
       search: '',
     }
-    
   }
 
   updateData = lyric => {
@@ -22,13 +21,11 @@ class Category extends Component {
 
   updateSearch(event) {
     this.setState({search: event.target.value.substr(0, 20)});
-    console.log('search', this.state.search);
-    console.log('event.target', event.target.value);
   }
 
   handleSubmit = event => {
     event.preventDefault();
-    let lyricsRef = firebase.database().ref('lyrics');
+    let lyricsRef = this.props.firebase.lyrics();
     let lyric = this.refs.lyric.value;
     let artist = this.refs.artist.value;
     let song = this.refs.song.value;
@@ -52,14 +49,11 @@ class Category extends Component {
         [uid]: {lyric, artist, song, category, songLink}
       })
       
-      console.log('edited lyric', this.state, lyrics[lyricIndex]);
     } else if (lyric && song && artist && category) {
-      // const uid = new Date().getTime().toString();
       const { lyrics } = this.state;
       lyrics.push({ uid, lyric, song, artist, category, songLink });
       lyricsRef.push({ uid, lyric, song, artist, category, songLink });
       this.setState({ lyrics });
-      console.log('added new', {lyrics});
     }
 
     this.refs.lyric.value = "";
@@ -70,31 +64,26 @@ class Category extends Component {
   };
 
   componentDidMount() {
-    let lyricsRef = firebase.database().ref('lyrics');
-    lyricsRef.orderByChild('category').equalTo(this.state.category).on('value', (snapshot) => {
-      let lyrics = snapshot.val();
+    this.props.firebase.lyrics().on('value', snapshot => {
+      const lyricsObject = snapshot.val();
 
-      let newState = [];
-      for(let lyric in lyrics) {
-        console.log('lyric', lyric);
-        newState.push({
-          uid: lyric,
-          lyric: lyrics[lyric].lyric,
-          artist: lyrics[lyric].artist,
-          song: lyrics[lyric].song,
-          songLink: lyrics[lyric].songLink,
-          category: lyrics[lyric].category
-        });
-        console.log('newstate', newState);
-      }
+      const lyricsList = Object.keys(lyricsObject).map(key => ({
+        ...lyricsObject[key],
+        uid: key,
+      })).filter(lyric => lyric.category === this.state.category);
+
       this.setState({
-        lyrics: newState
+        lyrics: lyricsList,
       });
     });
   }
 
-  removeLyric(lyricId) {
-    const lyricRef = firebase.database().ref(`/lyrics/${lyricId}`);
+  componentWillUnmount() {
+    this.props.firebase.lyrics().off();
+  }
+
+  removeLyric(uid) {
+    const lyricRef = this.props.firebase.lyric(uid);
     lyricRef.remove();
   }
 
@@ -106,13 +95,12 @@ class Category extends Component {
           this.state.search) !== -1;
       }
     );
-          console.log('filtered', filteredLyrics);
 
     return (
       <div className="container">
         <div className="row">
           <div className="col-xl-12">
-            <h1>Category: {this.state.category } </h1>
+            <h1>Category: { this.state.category } </h1>
           </div>
         </div>
         <div className="row">
@@ -196,4 +184,4 @@ class Category extends Component {
 
 
 
-export default Category;
+export default withFirebase(Category);
