@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+// import Categories from './Categories';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { FirebaseContext } from './Firebase';
 import { withFirebase } from './Firebase';
 
-class Home extends Component {
+class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,4 +77,4 @@ class Home extends Component {
   }
 }
 
-export default withFirebase(Home);
+export default withFirebase(LandingPage);

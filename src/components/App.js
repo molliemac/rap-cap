@@ -1,29 +1,35 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Categories from './Categories';
 import Category from './Category';
+
+import Navigation from './Navigation';
+import LandingPage from './Landing';
+import SignUpPage from './SignUp';
+import SignInPage from './SignIn';
+import PasswordForgetPage from './PasswordForget';
 import Home from './Home';
-import Test from './Test';
+import AccountPage from './Account';
+import AdminPage from './Admin';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
+import * as ROUTES from '.././constants/routes';
 
-        <hr />
-        
-        <Route exact path="/" component={Home} />
-        
-        <Route path="/:id" component={Category} />
-        
-      </div>
+const App = () => (
+  <Router>
+    <div>
+      <Navigation />
+      <hr />
+      <Route exact path={ROUTES.LANDING} component={LandingPage} />
+      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+      <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+      <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+      <Route exact path={ROUTES.HOME} component={Home} />
+      <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+      <Route path={ROUTES.ADMIN} component={AdminPage} />
+    </div>
     </Router>
-  );
-}
+);
+    
+
 
 export default App;
