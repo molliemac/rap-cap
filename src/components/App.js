@@ -13,6 +13,8 @@ import AccountPage from './Account';
 import AdminPage from './Admin';
 
 import * as ROUTES from '.././constants/routes';
+import { withFirebase } from './Firebase';
+import { withAuthentication } from './Session';
 
 const App = () => (
   <Router>
@@ -27,9 +29,7 @@ const App = () => (
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.ADMIN} component={AdminPage} />
     </div>
-    </Router>
+  </Router>
 );
-    
 
-
-export default App;
+export default withAuthentication(App);
