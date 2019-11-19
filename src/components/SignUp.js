@@ -3,10 +3,11 @@ import { Link, withRouter } from 'react-router-dom';
 
 import { withFirebase } from './Firebase';
 import * as ROUTES from '.././constants/routes';
+import * as ROLES from '.././constants/roles';
 
 const SignUpPage = () => (
   <div>
-    <h1>SignUp</h1>
+    <h1>Sign Up</h1>
     <SignUpForm />
   </div>
 );
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  isAdmin: false, 
   error: null,
 };
 
@@ -27,17 +29,29 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
+    const { username, email, passwordOne, isAdmin } = this.state;
+    const roles = {};
+
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
+        return this.props.firebase
+          .user(authUser.user.uid)
+          .set({
+            username,
+            email,
+            roles,
+          });
+      })
+      .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
-        console.log('history', this.props.history);
       })
       .catch(error => {
-        console.log('error', error);
         this.setState({ error });
       });
 
@@ -48,12 +62,17 @@ class SignUpFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  onChangeCheckbox = event => {
+    this.setState({ [event.target.name]: event.target.checked });
+  };
+
   render() {
     const {
       username,
       email,
       passwordOne,
       passwordTwo,
+      isAdmin,
       error,
     } = this.state;
 
@@ -93,6 +112,15 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
+        <label>
+          Admin:
+          <input
+            name="isAdmin"
+            type="checkbox"
+            checked={isAdmin}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>

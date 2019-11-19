@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { FirebaseContext } from './Firebase';
 import { withFirebase } from './Firebase';
+import { withAuthorization } from './Session';
 
 class Home extends Component {
   constructor(props) {
@@ -76,4 +77,6 @@ class Home extends Component {
   }
 }
 
-export default withFirebase(Home);
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Home);
