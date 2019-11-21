@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from './Firebase';
 import * as ROUTES from '.././constants/routes';
 import * as ROLES from '.././constants/roles';
+import * as PERMISSIONS from '.././constants/permissions';
 
 const SignUpPage = () => (
   <div>
@@ -31,9 +32,11 @@ class SignUpFormBase extends Component {
   onSubmit = event => {
     const { username, email, passwordOne, isAdmin } = this.state;
     const roles = {};
+    const permissions = {};
 
     if (isAdmin) {
       roles[ROLES.ADMIN] = ROLES.ADMIN;
+      permissions[PERMISSIONS.EDIT]=PERMISSIONS.EDIT;
     }
 
     this.props.firebase
@@ -45,6 +48,7 @@ class SignUpFormBase extends Component {
             username,
             email,
             roles,
+            permissions,
           });
       })
       .then(() => {

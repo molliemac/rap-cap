@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withFirebase } from './Firebase';
 
-class Category extends Component {
+class ManageLyrics extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -182,6 +182,4 @@ class Category extends Component {
   }
 }
 
-
-
-export default withFirebase(Category);
+export default withFirebase(ManageLyrics);
