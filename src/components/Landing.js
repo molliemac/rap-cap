@@ -64,7 +64,7 @@ class LandingPage extends Component {
                   {this.state.categories.map((category) => {
                     return (
                       <li key={category.uid} className={`${category.categoryName}`.toLowerCase()}>
-                        <Link to={`/${category.uid}`}>{category.categoryName}</Link>
+                        <Link to={`/${category.categoryName}`}>{category.categoryName}</Link>
                       </li>
                     )
                   })}

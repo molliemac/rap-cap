@@ -9,6 +9,7 @@ class Category extends Component {
       lyrics: [],
       search: '',
     }
+    console.log('this.props.match.params',this.props );
   }
 
   updateData = lyric => {
@@ -70,7 +71,7 @@ class Category extends Component {
       const lyricsList = Object.keys(lyricsObject).map(key => ({
         ...lyricsObject[key],
         uid: key,
-      })).filter(lyric => lyric.category === this.state.category);
+      }));
 
       this.setState({
         lyrics: lyricsList,
@@ -91,7 +92,7 @@ class Category extends Component {
     const {lyrics} = this.state;
     let filteredLyrics = lyrics.filter(
       (lyric) => {
-        return lyric.lyric.toLowerCase().indexOf(
+        return lyric.lyricText.toLowerCase().indexOf(
           this.state.search) !== -1;
       }
     );
@@ -156,7 +157,7 @@ class Category extends Component {
                 {filteredLyrics.map((lyric) => {
                   return (
                     <tr key={lyric.uid}>
-                      <td>{lyric.lyric}</td>
+                      <td>{lyric.lyricText}</td>
                       <td><a href={lyric.songLink} target="_blank">{lyric.song}</a></td>
                       <td>{lyric.artist}</td>
                         <td><button

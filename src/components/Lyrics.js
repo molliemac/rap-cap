@@ -64,9 +64,8 @@ class Lyrics extends Component {
   onChangeCategory = (category) => {
     // key error happens here
    console.log('category', category);
-    
 
-     this.setState({category});
+    this.setState({category});
     
     console.log('this.state.category', Object.values(this.state.category));
 
@@ -98,13 +97,26 @@ class Lyrics extends Component {
     })
     console.log('categoryList', categoryList);
 
-    this.props.firebase.lyrics().push({
+    const newLyricRef = this.props.firebase.lyrics().push({
       lyricText: this.state.lyricText,
       artist: this.state.artist,
       song: this.state.song,
       songLink: this.state.songLink,
-      category: {[Object.values(categoryList)]: true},
-    })
+    });
+
+    const newLyricKey = newLyricRef.key;
+    const categoryObj = categoryList.reduce((a, key) => Object.assign(a, { [key]: true}), {});
+
+    console.log(categoryObj);
+    // Create the data we want to update
+    var updatedLyricData = {};
+    updatedLyricData['/lyrics/' + newLyricKey + '/category'] = categoryObj;
+    
+    categoryList.forEach(function(categoryId) {
+      updatedLyricData['/categories/' + categoryId + '/lyrics/' + newLyricKey] = true;
+    });
+
+    this.props.firebase.db.ref().update(updatedLyricData);
 
     this.setState({ 
       lyricText: '',
