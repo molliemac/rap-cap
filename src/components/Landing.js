@@ -8,7 +8,7 @@ class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: '',
+      categoryName: '',
       categories: []
     }
     this.handleChange = this.handleChange.bind(this);
@@ -22,58 +22,61 @@ class LandingPage extends Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault();
-    const categoriesRef = this.props.firebase.categories();
-    const category = this.state.category;
-    categoriesRef.push(category);
+    this.props.firebase.categories().push({
+      categoryName: this.state.categoryName,
+    });
+
     this.setState({
-      category: ''
-    })
+      categoryName: '',
+    });
+
+    e.preventDefault();
   }
 
   componentDidMount() {
-    console.log('this.props.firebase', this.props.firebase);
-    const categoriesRef = this.props.firebase.categories();
-    categoriesRef.on('value', (snapshot) => {
-      let categories = snapshot.val();
-      console.log(categories);
-      let newState = [];
-      for (let category in categories) {
-        console.log(category);
-        newState.push({
-          id: categories[category]
-        });
-      }
+    this.props.firebase
+      .categories()
+      .on('value', (snapshot) => {
+      const categoryObject = snapshot.val();
+      console.log('categoryObject', categoryObject);
+
+      const categoryList = Object.keys(categoryObject).map(key=> ({
+        ...categoryObject[key],
+        uid: key,
+      }));
+      console.log('categoryList', categoryList);
+
       this.setState({
-        categories: newState
+        categories: categoryList,
       });
     });
   }
 
   render() {
+    const { categoryName, categories } = this.state;
     return (
         <div className="container">
           <h2 className="logo">I'd Rap That</h2>
 
-      <section className='display-item'>
-        <div className="wrapper">
-          <ul className="categories">
-            {this.state.categories.map((category) => {
-              return (
-                <li key={category.id} className={`${category.id}`.toLowerCase()}>
-                  <Link to={`/${category.id}`}>{category.id}</Link>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </section>
-      <form onSubmit={this.handleSubmit}>
-          <input type="text" name="category" placeholder="New Category" onChange={this.handleChange} value={this.state.category} />
-          <button>Add Category</button>
-        </form>
-    </div>
-    );
+            <section className='display-item'>
+              <div className="wrapper">
+                <ul className="categories">
+                  {this.state.categories.map((category) => {
+                    return (
+                      <li key={category.uid} className={`${category.categoryName}`.toLowerCase()}>
+                        <Link to={`/${category.uid}`}>{category.categoryName}</Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </section>
+            <form onSubmit={this.handleSubmit}>
+                <input type="text" name="categoryName" placeholder="New Category" onChange={this.handleChange} value={this.state.categoryName} />
+                <button>Add Category</button>
+              </form>
+          </div>
+     );
   }
 }
 

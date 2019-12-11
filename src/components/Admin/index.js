@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
+import Lyrics from '../Lyrics';
 
 class Admin extends Component {
 	constructor(props) {
@@ -48,6 +49,7 @@ class Admin extends Component {
 				{loading && <div>Loading ...</div>}
 
 				<UserList users={users} />
+				<Lyrics />
 			</div>
 		);
 	}

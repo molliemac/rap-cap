@@ -6,6 +6,10 @@ body {
 	color: #FFF;
 }
 
+input, select {
+	width: 100%;
+}
+
 .logo {
 	text-align: center;
 	padding-bottom: 20px;

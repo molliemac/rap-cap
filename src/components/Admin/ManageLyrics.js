@@ -1,22 +1,58 @@
 import React, {Component} from 'react';
-import { withFirebase } from './Firebase';
+import { withFirebase } from '../Firebase';
+import AsyncSelect from 'react-select/async';
 
 class ManageLyrics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: this.props.match.params.id,
       lyrics: [],
       search: '',
+      category: [],
+      artist: '',
+      lyricText:'',
+      song: '',
+      songLink: '',
     }
+    this.loadOptions = this.loadOptions.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.updateData = this.updateData.bind(this);
   }
 
-  updateData = lyric => {
-    this.refs.uid.value = lyric.uid;
-    this.refs.lyric.value = lyric.lyric;
-    this.refs.artist.value = lyric.artist;
-    this.refs.song.value = lyric.song;
-    this.refs.songLink.value = lyric.songLink;
+  loadOptions = () => {
+      return this.props.firebase.categories().once('value').then((snapshot) => {
+        const categoryObject = snapshot.val();
+        console.log('categoryObject', categoryObject);
+
+        const categoryList = Object.keys(categoryObject).map(key=> ({
+          ...categoryObject[key],
+          uid: key,
+        }));
+
+        let key = "categoryName";
+
+        const options = Object.keys(categoryList).map((val) => {return {value: val, label: val}});
+        console.log('options', options);
+        return options;
+      });
+
+    };
+
+  handleChange = value => {
+    this.setState({ value });
+    console.log('this.state', this.state.categories.value);
+    console.log('option selected', value);
+  }
+
+  updateData(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+    console.log('updateData', value, name);
   }
 
   updateSearch(event) {
@@ -31,28 +67,25 @@ class ManageLyrics extends Component {
     let song = this.refs.song.value;
     let songLink = this.refs.songLink.value;
     let uid = this.refs.uid.value;
-    let category = this.state.category;
 
-    if (uid && lyric && artist && song && songLink && category) {
+    if (uid && lyric && artist && song && songLink) {
       const { lyrics } = this.state;
       const lyricIndex = lyrics.findIndex(data => {
-        console.log('data', data.uid, uid);
         return data.uid === uid;
       });
       lyrics[lyricIndex].lyric = lyric;
       lyrics[lyricIndex].artist = artist;
       lyrics[lyricIndex].song = song;
       lyrics[lyricIndex].songLink = songLink;
-      lyrics[lyricIndex].category = category;
 
       lyricsRef.update({
-        [uid]: {lyric, artist, song, category, songLink}
+        [uid]: {lyric, artist, song, songLink}
       })
       
-    } else if (lyric && song && artist && category) {
+    } else if (lyric && song && artist) {
       const { lyrics } = this.state;
-      lyrics.push({ uid, lyric, song, artist, category, songLink });
-      lyricsRef.push({ uid, lyric, song, artist, category, songLink });
+      lyrics.push({ uid, lyric, song, artist, songLink });
+      lyricsRef.push({ uid, lyric, song, artist, songLink });
       this.setState({ lyrics });
     }
 
@@ -70,16 +103,19 @@ class ManageLyrics extends Component {
       const lyricsList = Object.keys(lyricsObject).map(key => ({
         ...lyricsObject[key],
         uid: key,
-      })).filter(lyric => lyric.category === this.state.category);
+      }));
+      console.log('lyricsList', lyricsList);
 
       this.setState({
         lyrics: lyricsList,
       });
     });
+
   }
 
   componentWillUnmount() {
     this.props.firebase.lyrics().off();
+    this.props.firebase.categories().off();
   }
 
   removeLyric(uid) {
@@ -88,7 +124,9 @@ class ManageLyrics extends Component {
   }
 
   render() {
-    const {lyrics} = this.state;
+    const { users } = this.props;
+    const { lyricText, song, artist, link, lyrics, loading, category } = this.state;
+    
     let filteredLyrics = lyrics.filter(
       (lyric) => {
         return lyric.lyric.toLowerCase().indexOf(
@@ -97,10 +135,11 @@ class ManageLyrics extends Component {
     );
 
     return (
+
       <div className="container">
         <div className="row">
           <div className="col-xl-12">
-            <h1>Category: { this.state.category } </h1>
+            <h1>Manage Lyrics </h1>
           </div>
         </div>
         <div className="row">
@@ -108,25 +147,55 @@ class ManageLyrics extends Component {
             <h2>Add new lyric here</h2>
             <form onSubmit={this.handleSubmit}>
             <div className="form-row">
-              <input type="hidden" ref="uid" />
+              <input type="hidden" />
               <div className="form-group col-md-6">
-                <textarea ref="lyric" placeholder="New Lyric" />
+                <textarea 
+                  name="lyric" 
+                  placeholder="New Lyric"
+                  value={this.lyricText}
+                  onChange={this.onChangeText} />
               </div>
               <div className="form-group col-md-6">
-                <input type="text" ref="artist" placeholder="Artist" />
+                <input 
+                  type="text" 
+                  name="artist" 
+                  placeholder="Artist"
+                  value={artist}
+                  onChange={this.onChangeText} />
               </div>
             </div>
             <div className="form-row">
-              <div className="form-group col-md-6">
-                <input type="text" ref="song" placeholder="Song" />
+              <div className="form-group col-md-4">
+                <input 
+                  type="text" 
+                  name="song" 
+                  placeholder="Song"
+                  value={this.song}
+                  onChange={this.onChangeText} />
               </div>
-              <div className="form-group col-md-6">
-                <input type="text" ref="songLink" placeholder="Genius Lyric" />
+              <div className="form-group col-md-4">
+                <input 
+                  type="text" 
+                  name="songLink" 
+                  placeholder="Genius Lyric"
+                  value={this.link}
+                  onChange={this.onChangeText} />
+              </div>
+              <div className="form-group col-md-4">
+                <AsyncSelect
+                  cacheOptions
+                  defaultOptions=true
+                  isMulti
+                  loadOptions={this.loadOptions}
+                  onChange={this.onChangeText}
+                  value={this.category}
+                />
               </div>
             </div>
               <button type="submit" className="btn btn-primary">Add Lyric</button>
             </form>
           </div>
+          
         </div>
         
           <div className="row">
@@ -148,6 +217,7 @@ class ManageLyrics extends Component {
                 <th scope="col">Lyric</th>
                 <th scope="col">Song</th>
                 <th scope="col">Artist</th>
+                <th scope="col">Category</th>
                 <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -159,8 +229,9 @@ class ManageLyrics extends Component {
                       <td>{lyric.lyric}</td>
                       <td><a href={lyric.songLink} target="_blank">{lyric.song}</a></td>
                       <td>{lyric.artist}</td>
+                      <td>{lyric.category}</td>
                         <td><button
-                          onClick={() => this.updateData(lyric)}
+                          onClick={this.updateData}
                           className="btn btn-link"
                         >Edit
                       </button>
@@ -181,5 +252,6 @@ class ManageLyrics extends Component {
     );
   }
 }
+
 
 export default withFirebase(ManageLyrics);

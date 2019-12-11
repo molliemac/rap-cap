@@ -183,5 +183,4 @@ class Category extends Component {
 }
 
 
-
 export default withFirebase(Category);

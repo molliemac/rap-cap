@@ -14,7 +14,6 @@ class Categories extends Component {
   componentDidMount() {
     let categoriesRef = this.props.firebase.database().ref('lyrics').on('value', snapshot => {
       const categoriesObject = snapshot.val();
-      console.log('categoriesRef', categoriesRef.category);
       const categoriesList = Object.keys(categoriesObject).map(key => ({
         ...categoriesObject[key],
         uid: key,
@@ -24,14 +23,12 @@ class Categories extends Component {
         categories: categoriesList
       })
       
-      
     })
     
   }
 
   render() {
    const { categories } = this.state;
-   console.log('this.state', this.state);
     return(
       <div>
           <h3>Categories</h3>

@@ -72,6 +72,7 @@ class Firebase {
 	lyric = uid => this.db.ref(`/lyrics/${uid}`);
 	lyrics = () => this.db.ref('lyrics');
 	categories = () => this.db.ref('categories');
+	category = uid => this.db.ref(`/categories/${uid}`);
 }
 
 export default Firebase;

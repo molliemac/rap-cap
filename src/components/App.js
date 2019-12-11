@@ -1,7 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Categories from './Categories';
-import Category from './Category';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Navigation from './Navigation';
 import LandingPage from './Landing';
@@ -11,6 +9,7 @@ import PasswordForgetPage from './PasswordForget';
 import Home from './Home';
 import AccountPage from './Account';
 import AdminPage from './Admin';
+import Category from './Category';
 
 import * as ROUTES from '.././constants/routes';
 import { withFirebase } from './Firebase';
@@ -21,6 +20,7 @@ const App = () => (
     <div>
       <Navigation />
       <hr />
+      <Switch>
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
@@ -28,6 +28,8 @@ const App = () => (
       <Route exact path={ROUTES.HOME} component={Home} />
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.ADMIN} component={AdminPage} />
+      <Route exact path={ROUTES.CATEGORY_DETAILS} component={Category} />
+      </Switch>
     </div>
   </Router>
 );
