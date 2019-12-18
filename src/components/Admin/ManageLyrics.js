@@ -99,6 +99,7 @@ class ManageLyrics extends Component {
   componentDidMount() {
     this.props.firebase.lyrics().on('value', snapshot => {
       const lyricsObject = snapshot.val();
+      console.log('lyricsObject', lyricsObject);
 
       const lyricsList = Object.keys(lyricsObject).map(key => ({
         ...lyricsObject[key],

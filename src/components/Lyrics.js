@@ -33,14 +33,15 @@ class Lyrics extends Component {
       .lyrics()
       .limitToLast(this.state.limit)
       .on('value', snapshot => {
-        const lyricObject = snapshot.val();      
+        const lyricObject = snapshot.val();
+        console.log('lyricObject', lyricObject);
         
         if (lyricObject) {
           const lyricList = Object.keys(lyricObject).map(key => ({
             ...lyricObject[key],
             uid: key,
           }));
-        
+                 
           this.setState({
             lyrics: lyricList,
             loading: false,
@@ -67,15 +68,12 @@ class Lyrics extends Component {
 
     this.setState({category});
     
-    console.log('this.state.category', Object.values(this.state.category));
-
     
   };
 
   loadOptions = () => {
       return this.props.firebase.categories().once('value').then((snapshot) => {
         const categoryObject = snapshot.val();
-        console.log('categoryObject', categoryObject);
 
         const categoryList = Object.keys(categoryObject).map(key=> ({
           ...categoryObject[key],
@@ -95,7 +93,6 @@ class Lyrics extends Component {
     const categoryList = this.state.category.map((category) => {
       return category.value;
     })
-    console.log('categoryList', categoryList);
 
     const newLyricRef = this.props.firebase.lyrics().push({
       lyricText: this.state.lyricText,
@@ -107,7 +104,6 @@ class Lyrics extends Component {
     const newLyricKey = newLyricRef.key;
     const categoryObj = categoryList.reduce((a, key) => Object.assign(a, { [key]: true}), {});
 
-    console.log(categoryObj);
     // Create the data we want to update
     var updatedLyricData = {};
     updatedLyricData['/lyrics/' + newLyricKey + '/category'] = categoryObj;
@@ -159,7 +155,7 @@ class Lyrics extends Component {
 
   render() {
     const { lyricText, song, artist, songLink, lyrics, category, loading } = this.state;
-    
+    console.log('lyrics', this.state.lyrics);
     return (
       <div className="container-fluid">
         <div className="row">

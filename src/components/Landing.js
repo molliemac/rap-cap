@@ -54,6 +54,7 @@ class LandingPage extends Component {
 
   render() {
     const { categoryName, categories } = this.state;
+    console.log('this.state.categories', this.state.categories);
     return (
         <div className="container">
           <h2 className="logo">I'd Rap That</h2>
@@ -64,7 +65,12 @@ class LandingPage extends Component {
                   {this.state.categories.map((category) => {
                     return (
                       <li key={category.uid} className={`${category.categoryName}`.toLowerCase()}>
-                        <Link to={`/${category.categoryName}`}>{category.categoryName}</Link>
+                        <Link to={{
+                          pathname: `/${category.categoryName}`,
+                          state: {
+                            categoryId: `${category.uid}`
+                          }
+                        }}>{category.categoryName}</Link>
                       </li>
                     )
                   })}
