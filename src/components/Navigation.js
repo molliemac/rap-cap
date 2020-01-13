@@ -19,25 +19,27 @@ const Navigation = () => (
 );
 
 const NavigationAuth = ({ authUser }) => (
-    <ul>
-        <li>
-            <Link to={ROUTES.LANDING}>Landing</Link>
+    <nav className="navbar navbar-expand-lg navbar-dark justify-content-between">
+        <div className="collapse navbar-collapse">
+    <ul className="navbar-nav mr-auto">
+        <li className="nav-item">
+            <Link className="nav-link" to={ROUTES.LANDING}>Landing</Link>
         </li>
-        <li>
-            <Link to={ROUTES.HOME}>Home</Link>
+        <li className="nav-item">
+            <Link className="nav-link" to={ROUTES.HOME}>Home</Link>
         </li>
-        <li>
-            <Link to={ROUTES.ACCOUNT}>Account</Link>
+        <li className="nav-item">
+            <Link className="nav-link" to={ROUTES.ACCOUNT}>Account</Link>
         </li>
         {!!authUser.roles[ROLES.ADMIN] && (
-          <li>
-            <Link to={ROUTES.ADMIN}>Admin</Link>
+          <li className="nav-item">
+            <Link className="nav-link" to={ROUTES.ADMIN}>Admin</Link>
           </li>
         )}     
-        <li>
-            <SignOutButton />
-        </li>
     </ul>
+      <SignOutButton />
+    </div>
+    </nav>
 );
 
 const NavigationNonAuth = () => (
