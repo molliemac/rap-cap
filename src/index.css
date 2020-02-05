@@ -10,6 +10,12 @@ input, select {
 	width: 100%;
 }
 
+.input-group-text {
+	border: none;
+	background: #33363b;
+	color: #FFF;
+}
+
 .logo {
 	text-align: center;
 	padding-bottom: 20px;
@@ -40,9 +46,23 @@ li.drizzy {
 	background-size: cover;
 }
 
+#drizzy-drake.jumbotron-fluid {
+	background-image: url('images/drizzy-drake-hero-bg.png');
+	background-size: cover;
+	background-position: center;
+	height: 500px;
+}
+
 li.summa {
 	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/summa-vibes-bg.svg');
 	background-size: cover;
+}
+
+#summa-vibes.jumbotron-fluid {
+	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/summa-hero-bg.png');
+	background-size: cover;
+	background-position: center;
+	height: 500px;
 }
 
 li.travel {
@@ -51,9 +71,23 @@ li.travel {
 	background-position: center center;
 }
 
+#travel.jumbotron-fluid {
+	background-image: linear-gradient(90deg, rgba(253,93,81,1) 0%, rgba(255,190,0,0.6348914565826331) 100%), url('images/travel-hero-bg.png');
+	background-size: cover;
+	background-position: center;
+	height: 500px;
+}
+
 li.myself {
 	background-image: linear-gradient(90deg, rgba(128,102,217,0.5872724089635855) 0%, rgba(199,0,255,0.6320903361344538) 100%), url('images/feelin-myself-bg.svg');
 	background-size: cover;
+}
+
+#feelin-myself.jumbotron-fluid {
+	background-image: linear-gradient(90deg, rgba(128,102,217,0.5872724089635855) 0%, rgba(199,0,255,0.6320903361344538) 100%), url('images/feelin-myself-hero-bg.png');
+	background-size: cover;
+	background-position: center;
+	height: 500px;
 }
 
 li.workout {
@@ -62,9 +96,47 @@ li.workout {
 	background-position: center center;
 }
 
+#i-workout.jumbotron-fluid {
+	background-image: linear-gradient(90deg, rgba(253,93,81,1) 0%, rgba(255,190,0,0.6348914565826331) 100%), url('images/workout-hero-bg.png');
+	background-size: cover;
+	background-position: center center;
+	height: 500px;
+}
+
 li.bitch {
 	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/boss-lady-bg.svg');
 	background-size: cover;
+}
+
+#bo-bitch.jumbotron-fluid {
+	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/boss-lady-hero-bg.png');
+	background-size: cover;
+	background-position: top;
+	height: 500px;
+}
+
+li.night {
+	background-image: linear-gradient(90deg, rgba(128,102,217,0.5872724089635855) 0%, rgba(199,0,255,0.6320903361344538) 100%), url('images/night-out-bg.svg');
+	background-size: cover;
+}
+
+#night-out.jumbotron-fluid {
+	background-image: linear-gradient(90deg, rgba(128,102,217,0.5872724089635855) 0%, rgba(199,0,255,0.6320903361344538) 100%), url('images/night-out-hero-bg.png');
+	background-size: cover;
+	background-position: center;
+	height: 500px;
+}
+
+li.started {
+	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/started-bottom-bg.svg');
+	background-size: cover;
+}
+
+#started-from-the-bottom.jumbotron-fluid {
+	background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url('images/started-bottom-hero-bg.png');
+	background-size: cover;
+	background-position: center;
+	height: 500px;
 }
 
 .categories a {
@@ -78,4 +150,8 @@ li.bitch {
 
 .css-2b097c-container {
 	color: #000;
+}
+
+.jumbotron h1 {
+	text-align: center;
 }

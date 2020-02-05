@@ -24,6 +24,7 @@ class Category extends Component {
 
   componentDidMount() {
     const categoryId = this.props.location.state.categoryId;
+
     const lyricArr = [];
 
     this.props.firebase.category(categoryId).child('lyrics').on('value', snapshot => {
@@ -68,26 +69,22 @@ class Category extends Component {
     );
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xl-12">
-            <h1>Category: { this.state.category } </h1>
-          </div>
-        </div>
-        
-        <div className="row">
-        <div className="col-xl-12">
-          <div className="input-group mb-3">
+      <div>
+      <div className="jumbotron jumbotron-fluid d-flex align-items-center" id={this.state.category.toLowerCase().replace(/[^A-Z0-9]+/ig, "-")}>
+        <div className="container">
+          <h1>{ this.state.category } </h1>
+          <div className="input-group mt-5">
             <div className="input-group-prepend">
               <span className="input-group-text" id="inputGroup-sizing-default">search lyrics</span>
             </div>
             <input type="text" className="form-control" id="lyricSearch" value={this.state.search} onChange={this.updateSearch.bind(this)} aria-label="Default" aria-describedby="inputGroup-sizing-default" />
           </div>
-          </div>
+          
         </div>
+      </div>
+      <div className="container">        
           <div className="row">
-            <div className="col-xl-12">
-              
+            <div className="col-xl-12"> 
               <table id="lyricsTable" className="table">
               <thead className="thead-dark">
               <tr>
@@ -97,7 +94,7 @@ class Category extends Component {
                 </tr>
               </thead>
               
-                <tbody>
+                <tbody>      
                 {filteredLyrics.map((lyric) => {
                   return (
                     <tr key={lyric.uid}>
@@ -111,6 +108,7 @@ class Category extends Component {
               </table>
             </div>
           </div>
+        </div>
         </div>
     );
   }
