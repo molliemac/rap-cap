@@ -1,63 +1,47 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
+import Select from 'react-select';
 import { FirebaseContext } from './Firebase';
-//import Category from './Category';
+// import styled from '@emotion/styled';
+
 
 class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      categories: [],
-      lyrics: [],
-    };
-  }
-  componentDidMount() {
-    let categoriesRef = this.props.firebase.database().ref('lyrics').on('value', snapshot => {
-      const categoriesObject = snapshot.val();
-      const categoriesList = Object.keys(categoriesObject).map(key => ({
-        ...categoriesObject[key],
-        uid: key,
-      }));
+  state = {
+    selectedOption: null
+  };
 
-      this.setState({
-        categories: categoriesList
-      })
-      
-    })
-    
-  }
+ handleChange = selectedOption => {
+  this.setState({ selectedOption });
+ }
 
-  render() {
-   const { categories } = this.state;
-    return(
-      <div>
-          <h3>Categories</h3>
-          <ul>
-              {categories.map(category => ( 
-                  
-                  
-                  <li key={category.uid}>
-                    <Link to={`/categories/${category.uid}`}>{category.uid}</Link>
-                  </li>
+ render() {
+  const scaryAnimals = [
+      { label: "Alligators", value: 1 },
+      { label: "Crocodiles", value: 2 },
+      { label: "Sharks", value: 3 },
+      { label: "Small crocodiles", value: 4 },
+      { label: "Smallest crocodiles", value: 5 },
+      { label: "Snakes", value: 6 }
+    ];
 
-              ))}
-              </ul>
-              <Route path={`/categories/:uid`} component={Category} />
-        </div>
-    );
-  }
-  
-}
+  const { selectedOption } = this.state;
 
-function Category ({ match }) {
-  
-
-  return (
+  return(
     <div>
-      <h2>{match.params.uid}</h2>
-      
+      <Select
+        value={selectedOption}
+        options={scaryAnimals}
+        onChange={this.handleChange}
+        
+        placeholder= "Is it worth it? Let me search it..."
+        openMenuOnClick={false}
+
+        
+      />
     </div>
-  )
+    );
+ }
+  
 }
 
 export default SearchBar;
