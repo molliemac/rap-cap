@@ -16,10 +16,19 @@ input, select {
 	color: #FFF;
 }
 
-.logo {
+.logo-text {
 	text-align: center;
-	padding-bottom: 20px;
+	padding-bottom: 0px;
 	font-weight: 700;
+}
+
+.logo {
+	width: 55px;
+	padding-bottom: 10px;
+}
+
+.subheader {
+	font-size: 18px;
 }
 
 .bgimg {
@@ -27,6 +36,10 @@ input, select {
   background-image: url('images/home-hero-image.png');
   background-attachment: fixed;
   background-position: center top;
+}
+
+.css-yk16xz-control {
+	min-height: 55px;
 }
 
 

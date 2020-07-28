@@ -19,7 +19,7 @@ const Navigation = () => (
 );
 
 const NavigationAuth = ({ authUser }) => (
-    <nav className="navbar navbar-expand-lg navbar-dark justify-content-between">
+    <nav className="navbar navbar-expand-lg navbar-dark justify-content-between fixed-top">
         <div className="collapse navbar-collapse">
     <ul className="navbar-nav mr-auto">
         <li className="nav-item">

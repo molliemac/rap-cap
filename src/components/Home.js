@@ -62,8 +62,9 @@ class Home extends Component {
       <Fragment>
       <div className="jumbotron bgimg">
         <div className="container">
-        <img src="./images/rapcap-logo.png" alt="Rap Cap" className="mx-auto"/>
-          <h2 className="logo">I'd Rap That</h2>
+        <img src={require("../images/rapcap-logo.png")} alt="Rap Cap" className="logo mx-auto d-block"/>
+          <h2 className="logo-text">I'd Rap That</h2>
+          <p className="subheader text-center">Looking for your next <span role="img" aria-label="fire emoji">🔥</span> caption? You're in the right spot.</p>
           <SearchBar/>
         </div>
       </div>
