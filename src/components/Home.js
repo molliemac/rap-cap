@@ -62,6 +62,7 @@ class Home extends Component {
       <Fragment>
       <div className="jumbotron bgimg">
         <div className="container">
+        <img src="./images/rapcap-logo.png" alt="Rap Cap" className="mx-auto"/>
           <h2 className="logo">I'd Rap That</h2>
           <SearchBar/>
         </div>
