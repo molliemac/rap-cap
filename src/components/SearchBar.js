@@ -1,42 +1,59 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
-import Select from 'react-select';
-import { FirebaseContext } from './Firebase';
 // import styled from '@emotion/styled';
+import AsyncSelect from 'react-select/async';
+import { withFirebase } from './Firebase';
 
 
 class SearchBar extends Component {
-  state = {
-    selectedOption: null
+  constructor(props) {
+    super(props);
+    this.state = {
+     selectedOption: null
+    };
+  }
+
+  loadOptions = inputValue => {
+   if (!inputValue) {
+    return Promise.resolve({ options: [] });
+   }
+      return this.props.firebase.lyrics().once('value')
+        .then((snapshot) => {
+          const lyricObject = snapshot.val();
+          console.log('lyricObject', lyricObject);
+
+          const lyrics = Object.keys(lyricObject).map(key=> ({
+            ...lyricObject[key],
+            uid: key,
+          }));
+
+          const lyricList = lyrics.map((lyric) => {
+            return {
+            value: lyric.lyricText, 
+            label: lyric.lyricText
+            }
+          });
+        
+        return lyricList;
+        
+      }).then(function(lyricList) {
+        let options = lyricList.filter(option =>
+          option.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        return options;
+      })
   };
 
- handleChange = selectedOption => {
-  this.setState({ selectedOption });
- }
-
  render() {
-  const scaryAnimals = [
-      { label: "Alligators", value: 1 },
-      { label: "Crocodiles", value: 2 },
-      { label: "Sharks", value: 3 },
-      { label: "Small crocodiles", value: 4 },
-      { label: "Smallest crocodiles", value: 5 },
-      { label: "Snakes", value: 6 }
-    ];
-
-  const { selectedOption } = this.state;
-
   return(
     <div>
-      <Select
-        value={selectedOption}
-        options={scaryAnimals}
-        onChange={this.handleChange}
-        
+      
+      <AsyncSelect
+        defaultOptions
+        cacheOptions
+        loadOptions={this.loadOptions}
         placeholder= "Is it worth it? Let me search it..."
         openMenuOnClick={false}
-
-        
       />
     </div>
     );
@@ -44,4 +61,4 @@ class SearchBar extends Component {
   
 }
 
-export default SearchBar;
+export default withFirebase(SearchBar);
