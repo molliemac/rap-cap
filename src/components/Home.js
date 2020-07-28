@@ -5,6 +5,7 @@ import { FirebaseContext } from './Firebase';
 import { withFirebase } from './Firebase';
 import { Select } from 'react-select';
 import SearchBar from './SearchBar';
+import {Fragment} from 'react';
 
 class Home extends Component {
   constructor(props) {
@@ -58,9 +59,14 @@ class Home extends Component {
     const { categoryName, categories } = this.state;
     console.log('this.state.categories', this.state.categories);
     return (
+      <Fragment>
+      <div className="jumbotron bgimg">
         <div className="container">
           <h2 className="logo">I'd Rap That</h2>
           <SearchBar/>
+        </div>
+      </div>
+        <div className="container">
             <section className='display-item'>
               <div className="wrapper">
                 <ul className="categories">
@@ -84,6 +90,7 @@ class Home extends Component {
                 <button>Add Category</button>
               </form>
           </div>
+          </Fragment>
      );
   }
 }
