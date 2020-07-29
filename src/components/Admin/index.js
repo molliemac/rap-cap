@@ -41,7 +41,7 @@ class Admin extends Component {
 	render() {
 		const { users, loading } = this.state;
 		return (
-			<div>
+			<div className="container-fluid mt-5">
 				<h1>Admin Page</h1>
 				<p>
 					The admin page is accessible by everyone who is signed in as an Admin user.

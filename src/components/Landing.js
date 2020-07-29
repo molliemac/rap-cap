@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
+// import Categories from './Categories';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { FirebaseContext } from './Firebase';
 import { withFirebase } from './Firebase';
+import { Select } from 'react-select';
+import SearchBar from './SearchBar';
+import {Fragment} from 'react';
 
 class LandingPage extends Component {
   constructor(props) {
@@ -37,11 +41,13 @@ class LandingPage extends Component {
       .categories()
       .on('value', (snapshot) => {
       const categoryObject = snapshot.val();
+      console.log('categoryObject', categoryObject);
 
       const categoryList = Object.keys(categoryObject).map(key=> ({
         ...categoryObject[key],
         uid: key,
       }));
+      console.log('categoryList', categoryList);
 
       this.setState({
         categories: categoryList,
@@ -51,12 +57,19 @@ class LandingPage extends Component {
 
   render() {
     const { categoryName, categories } = this.state;
-
+    console.log('this.state.categories', this.state.categories);
     return (
+      <Fragment>
+      <div className="jumbotron bgimg">
         <div className="container">
-          <h2 className="logo">I'd Rap That</h2>
-
-            <section className="display-item">
+        <img src={require("../images/rapcap-logo.png")} alt="Rap Cap" className="logo mx-auto d-block"/>
+          <h2 className="logo-text">I'd Rap That</h2>
+          <p className="subheader text-center">Looking for your next <span role="img" aria-label="fire emoji">🔥</span> caption? You're in the right spot.</p>
+          <SearchBar/>
+        </div>
+      </div>
+        <div className="container">
+            <section className='display-item'>
               <div className="wrapper">
                 <ul className="categories">
                   {this.state.categories.map((category) => {
@@ -74,11 +87,9 @@ class LandingPage extends Component {
                 </ul>
               </div>
             </section>
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" name="categoryName" placeholder="New Category" onChange={this.handleChange} value={this.state.categoryName} />
-                <button>Add Category</button>
-              </form>
+           
           </div>
+          </Fragment>
      );
   }
 }

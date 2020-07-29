@@ -20,7 +20,7 @@ const Navigation = () => (
 
 const NavigationAuth = ({ authUser }) => (
     <nav className="navbar navbar-expand-lg navbar-dark justify-content-between fixed-top">
-        <div className="collapse navbar-collapse">
+        <div className="navbar-collapse collapse">
     <ul className="navbar-nav mr-auto">
         <li className="nav-item">
             <Link className="nav-link" to={ROUTES.LANDING}>Landing</Link>
@@ -43,14 +43,18 @@ const NavigationAuth = ({ authUser }) => (
 );
 
 const NavigationNonAuth = () => (
-    <ul>
-        <li>
-            <Link to={ROUTES.LANDING}>Landing</Link>
+    <nav className="navbar navbar-expand-lg navbar-dark justify-content-between fixed-top">
+        <div className="navbar-collapse collapse">
+    <ul className="navbar-nav mr-auto">
+        <li className="nav-item">
+            <Link className="nav-link" to={ROUTES.LANDING}>Home</Link>
         </li>
-        <li>
-            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+        <li className="nav-item">
+            <Link className="nav-link" to={ROUTES.SIGN_IN}>Sign In</Link>
         </li>
     </ul>
+    </div>
+    </nav>
 );
 
 export default Navigation;

@@ -9,6 +9,7 @@ import PasswordForgetPage from './PasswordForget';
 import Home from './Home';
 import AccountPage from './Account';
 import AdminPage from './Admin';
+import ManageCategories from './Admin/ManageCategories';
 import Category from './Category';
 
 import * as ROUTES from '.././constants/routes';
@@ -19,7 +20,6 @@ const App = () => (
   <Router>
     <div>
       <Navigation />
-      <hr />
       <Switch>
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
@@ -29,6 +29,7 @@ const App = () => (
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.ADMIN} component={AdminPage} />
       <Route exact path={ROUTES.CATEGORY_DETAILS} component={Category} />
+      <Route exact path={ROUTES.MANAGE_CATEGORIES} component={ManageCategories} />
       </Switch>
     </div>
   </Router>

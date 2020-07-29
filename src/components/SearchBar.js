@@ -14,13 +14,9 @@ class SearchBar extends Component {
   }
 
   loadOptions = inputValue => {
-   if (!inputValue) {
-    return Promise.resolve({ options: [] });
-   }
       return this.props.firebase.lyrics().once('value')
         .then((snapshot) => {
           const lyricObject = snapshot.val();
-          console.log('lyricObject', lyricObject);
 
           const lyrics = Object.keys(lyricObject).map(key=> ({
             ...lyricObject[key],
