@@ -37,13 +37,13 @@ class ManageCategories extends Component {
       .categories()
       .on('value', (snapshot) => {
       const categoryObject = snapshot.val();
-      console.log('categoryObject', categoryObject);
+      console.log('manage categories', categoryObject);
 
       const categoryList = Object.keys(categoryObject).map(key=> ({
         ...categoryObject[key],
         uid: key,
       }));
-      console.log('categoryList', categoryList);
+      console.log('ManageCategories', categoryList);
 
       this.setState({
         categories: categoryList,

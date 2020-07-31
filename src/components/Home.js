@@ -87,10 +87,6 @@ class Home extends Component {
                 </ul>
               </div>
             </section>
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" name="categoryName" placeholder="New Category" onChange={this.handleChange} value={this.state.categoryName} />
-                <button>Add Category</button>
-              </form>
           </div>
           </Fragment>
      );

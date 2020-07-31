@@ -5,6 +5,7 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
 import Lyrics from '../Lyrics';
+import ManageCategories from './ManageCategories';
 
 class Admin extends Component {
 	constructor(props) {
@@ -49,6 +50,7 @@ class Admin extends Component {
 				{loading && <div>Loading ...</div>}
 
 				<UserList users={users} />
+				<ManageCategories />
 				<Lyrics />
 			</div>
 		);
@@ -63,10 +65,10 @@ const UserList = ({ users }) => (
 					<strong>ID:</strong> {user.uid}
 				</span>
 				<span>
-					<strong>Email:</strong> {user.email}
+					<strong>&nbsp;Email:</strong> {user.email}
 				</span>
 				<span>
-					<strong>Username:</strong> {user.username}
+					<strong>&nbsp;Username:</strong> {user.username}
 				</span>
 			</li>
 		))}

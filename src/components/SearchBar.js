@@ -4,13 +4,13 @@ import { Route, Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
 import { withFirebase } from './Firebase';
 
-
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
      selectedOption: null
     };
+    this.customFilter = this.customFilter.bind(this);
   }
 
   loadOptions = inputValue => {
@@ -25,20 +25,29 @@ class SearchBar extends Component {
 
           const lyricList = lyrics.map((lyric) => {
             return {
-            value: lyric.lyricText, 
-            label: lyric.lyricText
+            value: lyric, 
+            label: lyric.lyricText,
             }
           });
+          
+          console.log('options', lyricList);
         
         return lyricList;
         
-      }).then(function(lyricList) {
-        let options = lyricList.filter(option =>
-          option.label.toLowerCase().includes(inputValue.toLowerCase())
-        );
-        return options;
-      })
+      });
   };
+
+  customFilter(option, searchText) {
+    if (
+      option.value.lyricText.toLowerCase().includes(searchText.toLowerCase()) ||
+      option.value.artist.toLowerCase().includes(searchText.toLowerCase()) ||
+      option.value.song.toLowerCase().includes(searchText.toLowerCase())
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
  render() {
   return(
@@ -50,6 +59,8 @@ class SearchBar extends Component {
         loadOptions={this.loadOptions}
         placeholder= "Is it worth it? Let me search it..."
         openMenuOnClick={false}
+        filterOption={this.customFilter}
+        getOptionLabel={option =>`${option.value.lyricText} | ${option.value.song} | ${option.value.artist}`}
       />
     </div>
     );
