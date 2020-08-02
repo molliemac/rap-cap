@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {Fragment} from 'react';
 
 import SignOutButton from './SignOut';
 import { AuthUserContext } from './Session';
@@ -23,18 +24,20 @@ const NavigationAuth = ({ authUser }) => (
         <div className="navbar-collapse collapse">
     <ul className="navbar-nav mr-auto">
         <li className="nav-item">
-            <Link className="nav-link" to={ROUTES.LANDING}>Landing</Link>
-        </li>
-        <li className="nav-item">
             <Link className="nav-link" to={ROUTES.HOME}>Home</Link>
         </li>
         <li className="nav-item">
             <Link className="nav-link" to={ROUTES.ACCOUNT}>Account</Link>
         </li>
         {!!authUser.roles[ROLES.ADMIN] && (
+            <Fragment>
           <li className="nav-item">
             <Link className="nav-link" to={ROUTES.ADMIN}>Admin</Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/admin/managecategories">Manage Categories</Link>
+          </li>
+          </Fragment>
         )}     
     </ul>
       <SignOutButton />
@@ -47,7 +50,7 @@ const NavigationNonAuth = () => (
         <div className="navbar-collapse collapse">
     <ul className="navbar-nav mr-auto">
         <li className="nav-item">
-            <Link className="nav-link" to={ROUTES.LANDING}>Home</Link>
+            <Link className="nav-link" to={ROUTES.HOME}>Home</Link>
         </li>
         <li className="nav-item">
             <Link className="nav-link" to={ROUTES.SIGN_IN}>Sign In</Link>

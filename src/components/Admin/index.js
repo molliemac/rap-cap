@@ -41,6 +41,8 @@ class Admin extends Component {
 
 	render() {
 		const { users, loading } = this.state;
+		const {match } = this.props;
+		console.log('this.props', this.props);
 		return (
 			<div className="container-fluid mt-5">
 				<h1>Admin Page</h1>
@@ -50,7 +52,7 @@ class Admin extends Component {
 				{loading && <div>Loading ...</div>}
 
 				<UserList users={users} />
-				<ManageCategories />
+				
 				<Lyrics />
 			</div>
 		);

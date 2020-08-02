@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import { FirebaseContext } from '../Firebase';
+import { compose } from 'recompose';
+import * as ROLES from '../../constants/roles';
+
 import { withFirebase } from '../Firebase';
+import { withAuthorization } from '../Session';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import {Fragment} from 'react';
 
 class ManageCategories extends Component {
@@ -12,12 +18,18 @@ class ManageCategories extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.removeCategory = this.removeCategory.bind(this);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  removeCategory(uid) {
+    const categoryRef = this.props.firebase.category(uid);
+    categoryRef.remove();
   }
 
   handleSubmit(e) {
@@ -53,22 +65,32 @@ class ManageCategories extends Component {
 
   render() {
   	const { categoryName, categories } = this.state;
-  	console.log('this.state.categories ManageCategories', this.state.categories);
+  	const { match } = this.props;
+    console.log('this.props', this.props);
   	return (
   		<Fragment>
-  		<div className="container">
+  		<div className="container mt-5">
   		<div className="row">
-  		<form onSubmit={this.handleSubmit}>
-        <input type="text" name="categoryName" placeholder="New Category" onChange={this.handleChange} value={this.state.categoryName} />
-        <button>Add Category</button>
-      </form>
+      <h1>Manage Categories</h1>
       </div>
+      <div className="row mb-5">
+    		<form className="form-inline" onSubmit={this.handleSubmit}>
+        <div className="form-group mx-sm-3 mb-2">
+          <input type="text" name="categoryName" placeholder="New Category" onChange={this.handleChange} value={this.state.categoryName} />
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Add Category</button>
+        </form>
+      </div>
+      
       <div className="row">
       <ul>
         {this.state.categories.map((category) => {
           return (
             <li key={category.uid}>
-              {category.categoryName}
+              {category.categoryName} <span>
+           
+            <FontAwesomeIcon icon={faTimesCircle} onClick={() => this.removeCategory(category.uid)} />
+          </span>
             </li>
           )
         })}
@@ -81,4 +103,10 @@ class ManageCategories extends Component {
 
 }
 
-export default withFirebase(ManageCategories);
+const condition = authUser =>
+  authUser && !!authUser.roles[ROLES.ADMIN];
+
+export default compose(
+  withAuthorization(condition),
+  withFirebase,
+)(ManageCategories);

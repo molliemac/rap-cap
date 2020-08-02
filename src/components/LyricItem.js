@@ -62,7 +62,6 @@ class LyricItem extends Component {
 
     const { editMode, editText, editSong, editArtist, editSongLink, editCategory } = this.state;
     
-    
     return (
       <tr>    
       <td>

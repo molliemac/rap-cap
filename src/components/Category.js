@@ -41,7 +41,7 @@ class Category extends Component {
             artist: lyricObject.artist,
             lyricText: lyricObject.lyricText,
           });
-          //placed this in the wrong place!!
+          
           this.setState({
             lyrics: lyricArr,
             loading: false,
@@ -113,6 +113,5 @@ class Category extends Component {
     );
   }
 }
-
 
 export default withFirebase(Category);
