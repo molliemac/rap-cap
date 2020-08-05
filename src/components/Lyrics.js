@@ -34,7 +34,6 @@ class Lyrics extends Component {
       .limitToLast(this.state.limit)
       .on('value', snapshot => {
         const lyricObject = snapshot.val();
-        console.log('lyricObject', lyricObject);
         
         if (lyricObject) {
           const lyricList = Object.keys(lyricObject).map(key => ({
@@ -63,12 +62,7 @@ class Lyrics extends Component {
   };
 
   onChangeCategory = (category) => {
-    // key error happens here
-   console.log('category', category);
-
     this.setState({category});
-    
-    
   };
 
   loadOptions = () => {
@@ -127,7 +121,7 @@ class Lyrics extends Component {
 
   onEditLyric = (lyric, lyricText, song, artist, songLink, category) => {
     const { uid, ...lyricSnapshot } = lyric;
-    console.log('edit lyric', lyric.category);
+
     this.props.firebase.lyric(lyric.uid).set({
       ...lyricSnapshot,
       lyricText,
@@ -155,7 +149,7 @@ class Lyrics extends Component {
 
   render() {
     const { lyricText, song, artist, songLink, lyrics, category, loading } = this.state;
-    console.log('lyrics', this.state.lyrics);
+
     return (
       <div className="container-fluid">
         <div className="row">

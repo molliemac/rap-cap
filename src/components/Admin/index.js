@@ -5,7 +5,6 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import * as ROLES from '../../constants/roles';
 import Lyrics from '../Lyrics';
-import ManageCategories from './ManageCategories';
 
 class Admin extends Component {
 	constructor(props) {

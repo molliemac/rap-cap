@@ -24,7 +24,7 @@ const NavigationAuth = ({ authUser }) => (
         <div className="navbar-collapse collapse">
     <ul className="navbar-nav mr-auto">
         <li className="nav-item">
-            <Link className="nav-link" to={ROUTES.HOME}>Home</Link>
+            <Link className="nav-link" to={ROUTES.HOME}><img src={require("../images/rapcap-logo.png")} alt="Rap Cap" className="logo-nav" /></Link>
         </li>
         <li className="nav-item">
             <Link className="nav-link" to={ROUTES.ACCOUNT}>Account</Link>
@@ -50,10 +50,7 @@ const NavigationNonAuth = () => (
         <div className="navbar-collapse collapse">
     <ul className="navbar-nav mr-auto">
         <li className="nav-item">
-            <Link className="nav-link" to={ROUTES.HOME}>Home</Link>
-        </li>
-        <li className="nav-item">
-            <Link className="nav-link" to={ROUTES.SIGN_IN}>Sign In</Link>
+            <Link className="nav-link" to={ROUTES.HOME}><img src={require("../images/rapcap-logo.png")} className="logo-nav" alt="Rap Cap"/></Link>
         </li>
     </ul>
     </div>

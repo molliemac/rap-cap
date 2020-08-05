@@ -16,13 +16,11 @@ class LyricItem extends Component {
       editSongLink: this.props.lyric.songLink,
       editCategory: this.props.lyric.category,
     };
-    console.log('this.state', this.state);
   }
 
   loadOptions = () => {
       return this.props.firebase.categories().once('value').then((snapshot) => {
         let categories = Object.keys(snapshot.val()).map((val) => {return {value: val, label: val}})
-        console.log(categories);
         return categories;
       });
 
@@ -44,9 +42,7 @@ class LyricItem extends Component {
   };
 
   onChangeEditCategory = (selectedOption) => {
-    
-    console.log(`Option selected:`, selectedOption.value);
-    console.log('this.state.editCategory', this.state.editCategory);
+
   };
 
   onSaveEditText = () => {

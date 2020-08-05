@@ -40,8 +40,6 @@ class ManageLyrics extends Component {
 
   handleChange = value => {
     this.setState({ value });
-    console.log('this.state', this.state.categories.value);
-    console.log('option selected', value);
   }
 
   updateData(event) {
@@ -52,7 +50,6 @@ class ManageLyrics extends Component {
     this.setState({
       [name]: value
     });
-    console.log('updateData', value, name);
   }
 
   updateSearch(event) {
@@ -99,13 +96,11 @@ class ManageLyrics extends Component {
   componentDidMount() {
     this.props.firebase.lyrics().on('value', snapshot => {
       const lyricsObject = snapshot.val();
-      console.log('lyricsObject', lyricsObject);
 
       const lyricsList = Object.keys(lyricsObject).map(key => ({
         ...lyricsObject[key],
         uid: key,
       }));
-      console.log('lyricsList', lyricsList);
 
       this.setState({
         lyrics: lyricsList,

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { FirebaseContext } from '../Firebase';
 import { compose } from 'recompose';
 import * as ROLES from '../../constants/roles';
 
@@ -49,13 +48,11 @@ class ManageCategories extends Component {
       .categories()
       .on('value', (snapshot) => {
       const categoryObject = snapshot.val();
-      console.log('manage categories', categoryObject);
 
       const categoryList = Object.keys(categoryObject).map(key=> ({
         ...categoryObject[key],
         uid: key,
       }));
-      console.log('ManageCategories', categoryList);
 
       this.setState({
         categories: categoryList,
@@ -65,8 +62,7 @@ class ManageCategories extends Component {
 
   render() {
   	const { categoryName, categories } = this.state;
-  	const { match } = this.props;
-    console.log('this.props', this.props);
+
   	return (
   		<Fragment>
   		<div className="container mt-5">

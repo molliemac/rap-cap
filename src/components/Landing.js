@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-// import Categories from './Categories';
+
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { FirebaseContext } from './Firebase';
 import { withFirebase } from './Firebase';
@@ -41,13 +41,11 @@ class LandingPage extends Component {
       .categories()
       .on('value', (snapshot) => {
       const categoryObject = snapshot.val();
-      console.log('categoryObject', categoryObject);
 
       const categoryList = Object.keys(categoryObject).map(key=> ({
         ...categoryObject[key],
         uid: key,
       }));
-      console.log('categoryList', categoryList);
 
       this.setState({
         categories: categoryList,
@@ -57,7 +55,7 @@ class LandingPage extends Component {
 
   render() {
     const { categoryName, categories } = this.state;
-    console.log('this.state.categories', this.state.categories);
+   
     return (
       <Fragment>
       <div className="jumbotron bgimg">

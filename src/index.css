@@ -27,6 +27,10 @@ input, select {
 	padding-bottom: 10px;
 }
 
+.logo-nav {
+	width: 30px;
+}
+
 .subheader {
 	font-size: 18px;
 }
