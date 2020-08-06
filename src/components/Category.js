@@ -31,7 +31,7 @@ class Category extends Component {
       snapshot.forEach((child) => {
         this.props.firebase.lyric(child.key).on('value', childSnapshot => {
           let lyricObject = childSnapshot.val();
-          console.log('lyricObject', lyricObject);
+          
           let key = childSnapshot.key;
           // needed to create a UID for the object for render method
           lyricArr.push({

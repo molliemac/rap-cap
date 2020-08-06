@@ -29,8 +29,6 @@ class SearchBar extends Component {
             label: lyric.lyricText,
             }
           });
-          
-          console.log('options', lyricList);
         
         return lyricList;
         

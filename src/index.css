@@ -49,11 +49,11 @@ input, select {
 
 .categories {
 	display: flex;
-	flex-flow: row wrap;
+	flex-wrap: wrap;
 }
 
 .categories li {
-	flex-basis: 30%;
+	flex: 1 0 300px;
 	list-style-type: none;
 	width: 200px;
 	height: 200px;
