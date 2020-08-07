@@ -40,6 +40,7 @@ class Lyrics extends Component {
             ...lyricObject[key],
             uid: key,
           }));
+          console.log('lyricList', lyricList);
                  
           this.setState({
             lyrics: lyricList,

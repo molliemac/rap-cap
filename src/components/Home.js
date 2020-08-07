@@ -4,6 +4,7 @@ import { FirebaseContext } from './Firebase';
 import { withFirebase } from './Firebase';
 import { Select } from 'react-select';
 import SearchBar from './SearchBar';
+import RandomLyric from './randomLyric';
 import { Fragment } from 'react';
 
 class Home extends Component {
@@ -63,6 +64,7 @@ class Home extends Component {
           <h2 className="logo-text">I'd Rap That</h2>
           <p className="subheader text-center">Looking for your next <span role="img" aria-label="fire emoji">🔥</span> caption? You're in the right spot.</p>
           <SearchBar/>
+          <RandomLyric/>
         </div>
       </div>
         <div className="container">

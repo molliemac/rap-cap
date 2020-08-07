@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
 import { FirebaseContext } from './Firebase';
-//import Category from './Category';
 
 class Categories extends Component {
   constructor(props) {

@@ -15,9 +15,6 @@ import Category from './Category';
 import * as ROUTES from '.././constants/routes';
 import { withFirebase } from './Firebase';
 import { withAuthentication } from './Session';
-import ReactGA from 'react-ga';
-ReactGA.initialize('UA-174668854-1');
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 const App = () => (
   <Router>

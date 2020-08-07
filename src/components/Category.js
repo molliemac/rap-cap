@@ -18,34 +18,55 @@ class Category extends Component {
     }
   }
 
+   componentDidMount() {
+    this.onListenForLyrics();
+  };
+
   updateSearch(event) {
     this.setState({search: event.target.value.substr(0, 20)});
   }
 
-  componentDidMount() {
-    const categoryId = this.props.location.state.categoryId;
+  onNextPage = () => {
+    this.setState(
+      state => ({ limit: state.limit + 25 }),
+      this.onListenForLyrics,
+    );
+  };
 
+  onListenForLyrics = () => {
+    const categoryId = this.props.location.state.categoryId;
     const lyricArr = [];
 
-    this.props.firebase.category(categoryId).child('lyrics').on('value', snapshot => {
+    this.setState({ loading: true });
+
+    this.props.firebase
+    .category(categoryId)
+    .child('lyrics')
+    .limitToLast(this.state.limit)
+    .on('value', snapshot => {
       snapshot.forEach((child) => {
         this.props.firebase.lyric(child.key).on('value', childSnapshot => {
-          let lyricObject = childSnapshot.val();
-          
-          let key = childSnapshot.key;
-          // needed to create a UID for the object for render method
-          lyricArr.push({
-            uid: key,
-            song: lyricObject.song,
-            songLink: lyricObject.songLink,
-            artist: lyricObject.artist,
-            lyricText: lyricObject.lyricText,
-          });
-          
-          this.setState({
-            lyrics: lyricArr,
-            loading: false,
-          });
+          const lyricObject = childSnapshot.val();
+
+          const key = childSnapshot.key;
+
+          if (lyricObject) {
+            lyricArr.push({
+              uid: key,
+              song: lyricObject.song,
+              songLink: lyricObject.songLink,
+              artist: lyricObject.artist,
+              lyricText: lyricObject.lyricText,
+            });
+
+            this.setState({
+              lyrics: lyricArr,
+              loading: false,
+            });
+          } else {
+            this.setState({ lyrics: null, loading: false });
+          }
+
         }); 
       });
       
@@ -53,13 +74,14 @@ class Category extends Component {
 
   };
 
+
   componentWillUnmount() {
     this.props.firebase.category().off();
-    this.props.firebase.lyric().off();
+    this.props.firebase.lyrics().off();
   }
 
   render() {
-    const { lyrics } = this.state; 
+    const { lyrics, loading } = this.state; 
     
     let filteredLyrics = lyrics.filter(
       (lyric) => {
@@ -106,6 +128,15 @@ class Category extends Component {
                   })}
                  </tbody>
               </table>
+            </div>
+            <div className="row">
+              <div className="col-xl-12"> 
+              {!loading && lyrics && (
+              <button type="button" className="btn btn-primary float-right" onClick={this.onNextPage}>
+                Show More ❯
+              </button>
+            )}
+              </div>
             </div>
           </div>
         </div>
