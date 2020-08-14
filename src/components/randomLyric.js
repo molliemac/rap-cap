@@ -33,7 +33,7 @@ class randomLyric extends Component {
           }));
 
 
-          console.log('lyricList', lyricList);
+          console.log('lyricList', Object.entries(lyricList));
                  
           this.setState({
             lyrics: lyricList,
