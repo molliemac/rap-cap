@@ -74,7 +74,7 @@ class ManageCategories extends Component {
         <div className="form-group mx-sm-3 mb-2">
           <input type="text" name="categoryName" placeholder="New Category" onChange={this.handleChange} value={this.state.categoryName} />
           </div>
-          <button type="submit" class="btn btn-primary mb-2">Add Category</button>
+          <button type="submit" className="btn btn-primary mb-2">Add Category</button>
         </form>
       </div>
       

@@ -46,6 +46,7 @@ class ManageLyrics extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    console.log('name', name);
 
     this.setState({
       [name]: value
