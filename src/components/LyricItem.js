@@ -20,8 +20,18 @@ class LyricItem extends Component {
 
   loadOptions = () => {
       return this.props.firebase.categories().once('value').then((snapshot) => {
-        let categories = Object.keys(snapshot.val()).map((val) => {return {value: val, label: val}})
-        return categories;
+        const categoryObject = snapshot.val();
+
+        const categoryList = Object.keys(categoryObject).map(key=> ({
+          ...categoryObject[key],
+          uid: key,
+        }));
+
+        const options = categoryList.map((category) => {
+          return {value: category.uid, label: category.categoryName};
+        });
+        console.log('options', options);
+        return options;
       });
 
     };
@@ -35,13 +45,15 @@ class LyricItem extends Component {
       editSongLink: this.props.lyric.songLink,
       editCategory: this.props.lyric.category,
     }));
+    console.log('editCategory', this.state.editCategory);
   };
 
   onChangeEditText = ({ target }) => {
     this.setState({ [target.name]: target.value });
   };
 
-  onChangeEditCategory = (selectedOption) => {
+  onChangeEditCategory = ({ target }) => {
+     console.log('lyric', target);
 
   };
 
@@ -55,8 +67,10 @@ class LyricItem extends Component {
 
   render() {
     const { lyric, onRemoveLyric } = this.props;
+    console.log('this.props', this.props.lyric.uid);
 
     const { editMode, editText, editSong, editArtist, editSongLink, editCategory } = this.state;
+    console.log('editCategory', this.state.editCategory);
     
     return (
       <tr>    
@@ -111,7 +125,6 @@ class LyricItem extends Component {
       <td>
         {editMode ? (
           <AsyncSelect
-            cacheOptions
             defaultOptions
             isMulti
             loadOptions={this.loadOptions}
