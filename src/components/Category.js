@@ -47,7 +47,7 @@ class Category extends Component {
       snapshot.forEach((child) => {
         this.props.firebase.lyric(child.key).on('value', childSnapshot => {
           const lyricObject = childSnapshot.val();
-
+           
           const key = childSnapshot.key;
 
           if (lyricObject) {
@@ -59,13 +59,12 @@ class Category extends Component {
               lyricText: lyricObject.lyricText,
             });
 
+
             this.setState({
               lyrics: lyricArr,
               loading: false,
             });
-          } else {
-            this.setState({ lyrics: null, loading: false });
-          }
+          } 
 
         }); 
       });
@@ -82,6 +81,7 @@ class Category extends Component {
 
   render() {
     const { lyrics, loading } = this.state; 
+    console.log('lyrics', this.state);
     
     let filteredLyrics = lyrics.filter(
       (lyric) => {

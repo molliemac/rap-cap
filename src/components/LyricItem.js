@@ -7,7 +7,7 @@ import { withFirebase } from './Firebase';
 class LyricItem extends Component {
   constructor(props) {
     super(props);
-
+  
     this.state = {
       editMode: false,
       editText: this.props.lyric.lyricText,
@@ -15,7 +15,13 @@ class LyricItem extends Component {
       editArtist: this.props.lyric.artist,
       editSongLink: this.props.lyric.songLink,
       editCategory: this.props.lyric.category,
+      editId: this.props.lyric.uid,
+      selectedCategories: [],
     };
+  }
+
+  componentDidMount() {
+    this.getSelectedCategories(this.state.editCategory);
   }
 
   loadOptions = () => {
@@ -30,9 +36,37 @@ class LyricItem extends Component {
         const options = categoryList.map((category) => {
           return {value: category.uid, label: category.categoryName};
         });
-        console.log('options', options);
+        
         return options;
       });
+
+    };
+
+    getSelectedCategories = (editCategory) => {
+      //create a function to set default values in async, i.e. the categories saved to the db
+      
+      const categoryList = Object.keys(editCategory).map(key=> ({
+          ...editCategory[key],
+          uid: key,
+        }));
+      
+  
+      const result = categoryList.map(a => a.uid);
+      
+       var reads = {};
+
+       const promises = categoryList.map(
+        categoryId => this.props.firebase
+          .category(categoryId.uid)
+          .once('value')
+          .then(snapshot => ({
+            "value": categoryId.uid,
+            "label": snapshot.val().categoryName
+          })));
+
+       Promise.all(promises).then(values => {
+        this.setState({selectedCategories: values})
+       });
 
     };
 
@@ -44,34 +78,53 @@ class LyricItem extends Component {
       editArtist: this.props.lyric.artist,
       editSongLink: this.props.lyric.songLink,
       editCategory: this.props.lyric.category,
+      selectedCategories: this.state.selectedCategories,
     }));
-    console.log('editCategory', this.state.editCategory);
   };
 
   onChangeEditText = ({ target }) => {
     this.setState({ [target.name]: target.value });
   };
 
-  onChangeEditCategory = ({ target }) => {
-     console.log('lyric', target);
-
+  onChangeEditCategory = (e) => {
+    this.setState({selectedCategories:e});
   };
 
-  onSaveEditText = () => {
-    this.props.onEditLyric(this.props.lyric, this.state.editText, this.state.editSong, this.state.editArtist, this.state.editSongLink, this.state.editCategory);
+  onSaveEditText = (lyric, editLyric, editText, editSong, editArtist, editSongLink, editCategory, editId) => {
+    const categoryList = this.state.selectedCategories.map((category) => {
+      return category.value;
+    });
 
-    this.setState({ editMode: false });
+     const categoryObj = categoryList.reduce((a, key) => Object.assign(a, { [key]: true}), {});
+
+    const lyricKey = this.state.editId;
+    var updatedLyricData = {};
+
+    updatedLyricData['/lyrics/' + lyricKey + '/category'] = categoryObj;
+    
+    categoryList.forEach(function(categoryId) {
+      updatedLyricData['/categories/' + categoryId + '/lyrics/' + lyricKey] = true;
+    });
+
+    this.props.firebase.db.ref().update(updatedLyricData);
+
+    this.setState({
+      editMode: false,
+      editText: this.props.lyric.lyricText,
+      editSong: this.props.lyric.song,
+      editArtist: this.props.lyric.artist,
+      editSongLink: this.props.lyric.songLink,
+      editCategory: this.props.lyric.category,
+      editId: this.props.lyric.uid,
+    });
   };
     
-
 
   render() {
     const { lyric, onRemoveLyric } = this.props;
-    console.log('this.props', this.props.lyric.uid);
 
-    const { editMode, editText, editSong, editArtist, editSongLink, editCategory } = this.state;
-    console.log('editCategory', this.state.editCategory);
-    
+    const { editMode, editText, editSong, editArtist, editSongLink, editCategory, selectedCategories } = this.state;
+
     return (
       <tr>    
       <td>
@@ -129,13 +182,15 @@ class LyricItem extends Component {
             isMulti
             loadOptions={this.loadOptions}
             onChange={this.onChangeEditCategory}
-            value={editCategory}
-            name="editCategory"
+            value={selectedCategories}
+            name="selectedCategories"
           />
          
         ) : (
           <span>
-           
+           {
+           this.state.selectedCategories === null ? "" : this.state.selectedCategories.map((s, index) => <span key={index}>{(index ? ', ' : '') + s.label}</span>)
+        }
           
           </span>
         )}
