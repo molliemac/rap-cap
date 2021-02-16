@@ -22,7 +22,7 @@ class ManageLyrics extends Component {
   loadOptions = () => {
       return this.props.firebase.categories().once('value').then((snapshot) => {
         const categoryObject = snapshot.val();
-        console.log('categoryObject', categoryObject);
+      
 
         const categoryList = Object.keys(categoryObject).map(key=> ({
           ...categoryObject[key],
@@ -32,7 +32,7 @@ class ManageLyrics extends Component {
         let key = "categoryName";
 
         const options = Object.keys(categoryList).map((val) => {return {value: val, label: val}});
-        console.log('options', options);
+        
         return options;
       });
 
@@ -46,7 +46,7 @@ class ManageLyrics extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    console.log('name', name);
+
 
     this.setState({
       [name]: value

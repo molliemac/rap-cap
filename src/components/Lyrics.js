@@ -63,18 +63,16 @@ class Lyrics extends Component {
 
   onChangeCategory = (category) => {
     this.setState({category});
-console.log('categoryList', this.state.category);
   };
 
   loadOptions = () => {
       return this.props.firebase.categories().once('value').then((snapshot) => {
         const categoryObject = snapshot.val();
-        console.log('categoryObject', categoryObject);
+      
         const categoryList = Object.keys(categoryObject).map(key=> ({
           ...categoryObject[key],
           uid: key,
         }));
-        console.log('categoryList', categoryList);
 
         const options = categoryList.map((category) => {
           return {value: category.uid, label: category.categoryName};
@@ -90,8 +88,6 @@ console.log('categoryList', this.state.category);
       return category.value;
     });
 
-    console.log('category', this.state.category);
-
     const newLyricRef = this.props.firebase.lyrics().push({
       lyricText: this.state.lyricText,
       artist: this.state.artist,
@@ -101,7 +97,7 @@ console.log('categoryList', this.state.category);
 
     const newLyricKey = newLyricRef.key;
     const categoryObj = categoryList.reduce((a, key) => Object.assign(a, { [key]: true}), {});
-        console.log('categoryObj', categoryObj);
+  
     // Create the data we want to update
     var updatedLyricData = {};
     updatedLyricData['/lyrics/' + newLyricKey + '/category'] = categoryObj;

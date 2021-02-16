@@ -81,7 +81,6 @@ class Category extends Component {
 
   render() {
     const { lyrics, loading } = this.state; 
-    console.log('lyrics', this.state);
     
     let filteredLyrics = lyrics.filter(
       (lyric) => {
