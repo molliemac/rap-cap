@@ -84,6 +84,7 @@ class LyricItem extends Component {
 
   onChangeEditText = ({ target }) => {
     this.setState({ [target.name]: target.value });
+    console.log('targe', target.name);
   };
 
   onChangeEditCategory = (e) => {
@@ -117,6 +118,10 @@ class LyricItem extends Component {
       editCategory: this.props.lyric.category,
       editId: this.props.lyric.uid,
     });
+    console.log('this.state', this.state);
+     
+     this.props.onEditLyric(this.props.lyric, this.state.editText, this.state.editSong, this.state.editArtist, this.state.editSongLink, this.state.editCategory);
+
   };
     
 

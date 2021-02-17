@@ -45,6 +45,7 @@ class SearchBar extends Component {
     } else {
       return false;
     }
+
   }
 
  render() {
@@ -59,6 +60,7 @@ class SearchBar extends Component {
         openMenuOnClick={false}
         filterOption={this.customFilter}
         getOptionLabel={option =>`${option.value.lyricText} | ${option.value.song} | ${option.value.artist}`}
+        isClearable={true}
       />
     </div>
     );
